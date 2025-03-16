@@ -1,0 +1,21 @@
+main {
+    padding-top: 120px;
+    /* Ajusta el valor según necesites */
+}
+
+.clock-container {
+    position: fixed;
+    /* Se mantiene fijo en la pantalla */
+    top: 10px;
+    /* Ajuste superior */
+    right: 20px;
+    /* Ajuste derecho */
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.7);
+    /* Fondo semitransparente */
+    color: white;
+    /* Texto blanco */
+    padding: 60px 15px;
+    border-radius: 8px;
+}
