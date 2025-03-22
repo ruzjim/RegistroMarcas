@@ -16,11 +16,59 @@
     <!-- Archivos propios aqui se quitan o ponen CSS JS u otros que creamos -->
     <link rel="stylesheet" href="/css/nav.css">
     <script src="/js/nav.js"></script>
+    <script>
+        function cargarRegistros() {
+            let tabla = localStorage.getItem('tablaRegistros') || '';
+            document.getElementById('tabla-body').innerHTML = tabla;
+        }
+        window.onload = cargarRegistros;
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color:rgb(124, 124, 124);
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
     <div id="nav-container"></div>
-    
+    <div class="container">
+        <h2>Planilla de Marcas Registradas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Departamento</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
