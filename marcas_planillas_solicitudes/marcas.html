@@ -20,12 +20,12 @@
         function guardarRegistro(event) {
             event.preventDefault();
             
-            let nombre = document.getElementById('Nombre').value;
-            let fecha = document.getElementById('Fecha').value;
-            let hora = document.getElementById('Hora').value;
-            let departamento = document.getElementById('Departamento').value;
+            let nombre = document.getElementById('nombre').value;
+            let fecha = document.getElementById('fecha').value;
+            let hora = document.getElementById('hora').value;
+            let departamento = document.getElementById('departamento').value;
             
-            let datos = `<tr><td>${Nombre}</td><td>${Fecha}</td><td>${Hora}</td><td>${Departamento}</td></tr>`;
+            let datos = `<tr><td>${nombre}</td><td>${fecha}</td><td>${hora}</td><td>${departamento}</td></tr>`;
             
             let tabla = localStorage.getItem('tablaRegistros') || '';
             tabla += datos;
@@ -83,25 +83,26 @@
     <br> <br><br>
     <div class="container">
         <h2>Registro de Marca</h2>
-        <form action="#" method="post">
-            <label for="nombre">Nombre y apellidos del empleado:</label>
+        <form onsubmit="guardarRegistro(event)">
+
+            <label for="nombre">Nombre con apellidos:</label>
             <input type="text" id="nombre" name="nombre" required>
-            
+
             <label for="fecha">Fecha de Registro:</label>
             <input type="date" id="fecha" name="fecha" required>
-            
+
             <label for="hora">Hora de Registro:</label>
             <input type="time" id="hora" name="hora" required>
-            
+
             <label for="Departamento">Departamento:</label>
-            <select id="Departamento" name="Departamento" required>
+            <select id="Departamento" name="departamento" required>
                 <option value="Bodega">Bodega</option>
                 <option value="Ingenierio">Ingenierio</option>
                 <option value="Operario de produccion">Operario de produccion</option>
                 <option value="Lider de produccion">Lider de produccion</option>
             </select>
-            
-            <button type="submit">Registrar Marca</button>
+
+            <button type="submit">Registrar</button>
         </form>
     </div>
 </body>
