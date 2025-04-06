@@ -8,6 +8,9 @@ fetch("../../components/nav.html")
   })
   .catch((error) => console.error("Error al cargar el nav:", error));
 
+
+  console.log('kjahdsj');
+  
 // $.ajax({
 //   url: "components/nav.html",
 //   method: "GET",
