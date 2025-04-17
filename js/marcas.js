@@ -26,6 +26,34 @@ function updateButton() {
     button.classList.add("btn-danger");
   }
 }
+document.getElementById("btn-marca").addEventListener("click", function () {
+  const cedula = document.getElementById("cedula").value.trim();
+  const tipo = this.textContent.trim(); // Entrada o Salida
+
+  if (cedula === "") {
+    Swal.fire("Cuidado", "Debe ingresar la cédula", "warning");
+    return;
+  }
+
+  $.post(
+    "../marcas_planillas_solicitudes/registrar_marca.php",
+    { cedula, tipo },
+    function (response) {
+      try {
+        const res = JSON.parse(response);
+        if (res.status === "ok") {
+          Swal.fire("Listo", res.msg, "success");
+          document.getElementById("cedula").value = "";
+        } else {
+          Swal.fire("Error", res.msg, "error");
+        }
+      } catch (err) {
+        console.error(err);
+        Swal.fire("Error", "Ocurrió un error inesperado", "error");
+      }
+    }
+  );
+});
 
 // Actualizar botón en la carga de la página
 updateButton();
