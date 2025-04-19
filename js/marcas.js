@@ -38,14 +38,14 @@ document.getElementById("btn-marca").addEventListener("click", function () {
   $.post(
     "../marcas_planillas_solicitudes/registrar_marca.php",
     { cedula, tipo },
-    function (response) {
+    function (respuesta) {
       try {
-        const res = JSON.parse(response);
-        if (res.status === "ok") {
-          Swal.fire("Listo", res.msg, "success");
+        console.log(respuesta);
+        if (respuesta.status === "ok") {
+          Swal.fire("Listo", respuesta.msg, "success");
           document.getElementById("cedula").value = "";
         } else {
-          Swal.fire("Error", res.msg, "error");
+          Swal.fire("Error", respuesta.msg, "error");
         }
       } catch (err) {
         console.error(err);

@@ -12,21 +12,24 @@ if ($conexion->connect_errno) {
     echo json_encode(['status' => 'error', 'mensaje' => 'Error de conexión']);
     exit;
 }
+
 $nombre = $_POST['nombre'];
 $apellido = $_POST['apellido'];
 $edad = $_POST['edad'];
 $cedula = $_POST['cedula'];
 $hora_entrada = $_POST['hora_entrada'];
-
-
-$query = "INSERT INTO Planilla (Nombre, Apellido, Edad, Cedula, Hora_entrada) VALUES (?, ?, ?, ?, ?)";
+$ausencias = $_POST['ausencias'] ?? 0;
+$tardias = $_POST['tardias'] ?? 0;
+$query = "UPDATE Planilla SET Nombre=?, Apellido=?, Edad=?, Hora_entrada=?, 
+  Ausencias = ?, 
+  Tardias = ? WHERE Cedula=?";
 $stmt = $conexion->prepare($query);
-$stmt->bind_param("ssiis", $nombre, $apellido, $edad, $cedula, $hora_entrada);
+$stmt->bind_param("ssisiii", $nombre, $apellido, $edad, $hora_entrada, $ausencias, $tardias, $cedula);
 
 if ($stmt->execute()) {
-    echo json_encode(['status' => 'ok', 'mensaje' => 'Persona agregada']);
+    echo json_encode(['status' => 'ok', 'mensaje' => 'Persona actualizada']);
 } else {
-    echo json_encode(['status' => 'error', 'mensaje' => 'Error al agregar persona']);
+    echo json_encode(['status' => 'error', 'mensaje' => 'Error al actualizar persona']);
 }
 
 $stmt->close();

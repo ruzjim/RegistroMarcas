@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-
+date_default_timezone_set('America/Costa_Rica');
 $host = '82.197.82.143';
 $usuario = 'u603397150_AmbWebQ12025';
 $password = 'AmbWebQ12025';
@@ -26,23 +26,39 @@ $hora_actual = date("H:i:s");
 $estado = "Normal";
 
 // Si es entrada y es de mañana, consultamos la hora esperada
-if ($tipo === "Entrada" && intval(date("H")) < 12) {
-    $stmt = $conexion->prepare("SELECT hora_entrada FROM Planilla WHERE cedula = ?");
+if ($tipo === "Entrada") {
+    $stmt = $conexion->prepare("SELECT Hora_entrada FROM Planilla WHERE Cedula = ?");
     $stmt->bind_param("i", $cedula);
     $stmt->execute();
     $stmt->bind_result($hora_esperada);
 
     if ($stmt->fetch()) {
-        if (strtotime($hora_actual) > strtotime($hora_esperada)) {
+        // Guardamos el valor antes de cerrar el statement
+        $hora_esperada_copy = $hora_esperada;
+
+        $stmt->close(); // CERRAMOS ANTES DE HACER OTRO PREPARE
+
+        if (strtotime($hora_actual) > strtotime($hora_esperada_copy)) {
             $estado = "Tardía";
+
+            // Ahora sí podemos preparar otro statement
+            $stmt2 = $conexion->prepare("UPDATE Planilla SET Tardias = Tardias + 1 WHERE Cedula = ?");
+            $stmt2->bind_param("i", $cedula);
+            $stmt2->execute();
+            $stmt2->close();
+
+            error_log("Hora esperada: $hora_esperada_copy vs actual: $hora_actual");
         }
+    } else {
+        $stmt->close(); // Asegúrate de cerrarlo también si no entra al fetch
+        error_log("No se encontró la cédula $cedula en Planilla");
     }
-    $stmt->close();
 }
+
 
 $sql = "INSERT INTO Marcas (Cedula, Tipo_marca, Fecha, Hora, Estado) VALUES (?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("sssss", $cedula, $tipo, $fecha, $hora_actual, $estado);
+$stmt->bind_param("issss", $cedula, $tipo, $fecha, $hora_actual, $estado);
 
 if ($stmt->execute()) {
     $mensaje = $estado === "Tardía" ? "Marca registrada como tardía" : "Marca registrada con éxito";
